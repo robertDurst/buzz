@@ -9,14 +9,19 @@ CURRENCY_LAYER_API_KEY
 ```
 Then you have two options to install this:
 
-1. clone this repo, `cd buzz`, `go install`, 'dep ensure' (if you don't have dep, `brew install dep`)
+1. clone this repo, `cd buzz`, `go install`, `dep ensure` (if you don't have dep, `brew install dep`)
 2. `go get github.com/robertdurst/buzz`
 
 Finally, query some account payment history!
 
 Currently there is only one function:
 ```
-buzz query [stellar_address] [output_csv_filename]
+buzz query [stellar_address] [output_csv_filename] [flags]
+```
+
+Flags
+```
+--aggregate [day | month | none]
 ```
 
 ## Current State
@@ -25,7 +30,6 @@ buzz query [stellar_address] [output_csv_filename]
 * No data processing
 
 ## Future Work
-* Post process data, aggregating data by day/month/year
 * Use an alternative currency, such as EUR, instead of USD
 
 ## Wish List

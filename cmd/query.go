@@ -46,14 +46,30 @@ var queryCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		account := args[0]
 		filename := args[1]
+
+		lang := cmd.Flag("aggregate").Value.String()
+
 		p := payments.PaymentsForAccount(account)
 		data := payments.FillInVolumePerPayment(p)
-		orderedData := payments.OrderData(data)
 
-		payments.CreateCSV(orderedData, fmt.Sprintf("%s.csv", filename))
+		switch lang {
+		case "day":
+			orderedData := payments.OrderDataByDate(data)
+			payments.CreateCSVAggregateDay(orderedData, fmt.Sprintf("%s.csv", filename))
+			break
+		case "month":
+			orderedData := payments.OrderDataByMonth(data)
+			payments.CreateCSVAggregateMonth(orderedData, fmt.Sprintf("%s.csv", filename))
+			break
+		default:
+			orderedData := payments.OrderDataByDate(data)
+			payments.CreateCSVRaw(orderedData, fmt.Sprintf("%s.csv", filename))
+			break
+		}
 	},
 }
 
 func init() {
+	rootCmd.PersistentFlags().String("aggregate", "none", "aggregate data by time interval (accepted inputs: none, day, month)")
 	rootCmd.AddCommand(queryCmd)
 }
