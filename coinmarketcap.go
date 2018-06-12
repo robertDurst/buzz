@@ -8,14 +8,9 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-type DataPoint struct {
-	Date  string
-	Price float64
-}
-
 // GetStellarHistoricalData retreives all historical data of XLM by date.
 // Note: here we use the closing price as there is not an average price for the day.
-func GetStellarHistoricalData() []DataPoint {
+func GetStellarHistoricalData() map[string]float64 {
 	resp, err := http.Get("https://coinmarketcap.com/currencies/stellar/historical-data/?start=20130428&end=20180612")
 	if err != nil {
 		log.Fatal(err)
@@ -28,7 +23,7 @@ func GetStellarHistoricalData() []DataPoint {
 		log.Fatal(err)
 	}
 
-	var data = make([]DataPoint, 0)
+	var data = make(map[string]float64)
 	var price float64
 	var date string
 
@@ -48,11 +43,7 @@ func GetStellarHistoricalData() []DataPoint {
 				}
 			}
 		})
-
-		data = append(data, DataPoint{
-			Date:  date,
-			Price: price,
-		})
+		data[StringToDateLumenFormat(date)] = price
 	})
 
 	return data
