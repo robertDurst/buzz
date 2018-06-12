@@ -28,7 +28,7 @@ func PaymentsForAccount(account string) []TruncatedPayment {
 		}
 
 		lens := len(t.Embedded.Records)
-		if lens < 200 {
+		if lens < 1 {
 			break
 		}
 		pagingToken = t.Embedded.Records[lens-1].PagingToken
@@ -41,7 +41,6 @@ func PaymentsForAccount(account string) []TruncatedPayment {
 
 		payments = append(payments, p...)
 	}
-
 	return payments
 }
 
