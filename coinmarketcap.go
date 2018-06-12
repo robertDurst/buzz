@@ -1,3 +1,4 @@
+// Scrapes and returns all historical data for XLM.
 package main
 
 import (
@@ -10,8 +11,13 @@ import (
 
 // GetStellarHistoricalData retreives all historical data of XLM by date.
 // Note: here we use the closing price as there is not an average price for the day.
-func GetStellarHistoricalData() map[string]float64 {
-	resp, err := http.Get("https://coinmarketcap.com/currencies/stellar/historical-data/?start=20130428&end=20180612")
+func getStellarHistoricalData() map[string]float64 {
+	// Note we used hardcoded dates.
+	// The start date is the beginning
+	// of XLM history, while the end date
+	// is an arbitrary date, two years in
+	// the future.
+	resp, err := http.Get("https://coinmarketcap.com/currencies/stellar/historical-data/?start=20130428&end=20200612")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -43,7 +49,7 @@ func GetStellarHistoricalData() map[string]float64 {
 				}
 			}
 		})
-		data[StringToDateLumenFormat(date)] = price
+		data[stringToDateLumenFormat(date)] = price
 	})
 
 	return data

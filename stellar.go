@@ -1,3 +1,5 @@
+// Stellar contains a method to grab all payments for a Stellar account.
+
 package main
 
 import (
@@ -6,9 +8,8 @@ import (
 	"net/http"
 )
 
-func PaymentsForAccount() []TruncatedPayment {
+func paymentsForAccount(account string) []TruncatedPayment {
 	payments := make([]TruncatedPayment, 0)
-	account := "GCKX3XVTPVNFXQWLQCIBZX6OOPOIUT7FOAZVNOFCNEIXEZFRFSPNZKZT"
 
 	lens := 200
 	pagingToken := "0"
@@ -37,10 +38,34 @@ func PaymentsForAccount() []TruncatedPayment {
 			return (p.Account == "")
 		}
 
-		p := Filter(t.Embedded.Records, filterFunction)
+		p := filterPayments(t.Embedded.Records, filterFunction)
 
 		payments = append(payments, p...)
 	}
 
 	return payments
+}
+
+func filterPayments(vs []Payment, f func(Payment) bool) []TruncatedPayment {
+	vsf := make([]TruncatedPayment, 0)
+	for _, v := range vs {
+		if f(v) {
+
+			var asset string
+			if v.AssetCode == "EURT" {
+				asset = "EUR"
+			} else {
+				asset = v.AssetCode
+			}
+
+			vsf = append(vsf, TruncatedPayment{
+				CreatedAt:     v.CreatedAt,
+				FormattedDate: stringToDateCurrencylayerFormat(v.CreatedAt),
+				AssetCode:     asset,
+				Amount:        v.Amount,
+				Volume_USD:    0,
+			})
+		}
+	}
+	return vsf
 }
