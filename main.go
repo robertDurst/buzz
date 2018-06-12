@@ -1,11 +1,7 @@
 package main
 
-func main() {
-	account := "GCKX3XVTPVNFXQWLQCIBZX6OOPOIUT7FOAZVNOFCNEIXEZFRFSPNZKZT"
-	// Check that the key is valid before doing anything else
-	payments := paymentsForAccount(account)
-	data := fillInVolumePerPayment(payments)
-	orderedData := orderData(data)
+import "github.com/robertdurst/usd_volume_by_account/cmd"
 
-	createCSV(orderedData, "result.csv")
+func main() {
+	cmd.Execute()
 }

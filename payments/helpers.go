@@ -1,6 +1,6 @@
 // Various helper functions... most deal with the formatting of date/time.
 
-package main
+package payments
 
 import (
 	"encoding/json"

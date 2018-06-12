@@ -1,4 +1,4 @@
-package main
+package payments
 
 type CurrencyExchangeResponse struct {
 	Quotes map[string]float64 `json:"quotes"`

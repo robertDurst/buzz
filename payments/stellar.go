@@ -1,6 +1,5 @@
 // Stellar contains a method to grab all payments for a Stellar account.
-
-package main
+package payments
 
 import (
 	"fmt"
@@ -8,7 +7,7 @@ import (
 	"net/http"
 )
 
-func paymentsForAccount(account string) []TruncatedPayment {
+func PaymentsForAccount(account string) []TruncatedPayment {
 	payments := make([]TruncatedPayment, 0)
 
 	lens := 200

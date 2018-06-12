@@ -1,6 +1,5 @@
 // Post Process contains methods for sorting and outputing data.
-
-package main
+package payments
 
 import (
 	"encoding/csv"
@@ -11,7 +10,7 @@ import (
 )
 
 // Create a CSV from a list of payments
-func createCSV(data [][]TruncatedPayment, fileName string) {
+func CreateCSV(data [][]TruncatedPayment, fileName string) {
 	file, err := os.Create(fileName)
 	if err != nil {
 		log.Fatal("Cannot create file", err)
@@ -35,7 +34,7 @@ func createCSV(data [][]TruncatedPayment, fileName string) {
 }
 
 // Sort data by date
-func orderData(data map[Date][]TruncatedPayment) [][]TruncatedPayment {
+func OrderData(data map[Date][]TruncatedPayment) [][]TruncatedPayment {
 	var keys []int
 	keyToString := make(map[int]string)
 	for k := range data {

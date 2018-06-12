@@ -1,5 +1,5 @@
 // Scrapes and returns all historical data for XLM.
-package main
+package payments
 
 import (
 	"log"

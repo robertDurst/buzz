@@ -1,8 +1,7 @@
 // Process is the code used to process all the received payment data.
 // It requests exchange prices for each fiat to USD and then updates
 // the USD Volume per payment (includes XLM-USD as well).
-
-package main
+package payments
 
 import (
 	"bytes"
@@ -44,7 +43,7 @@ func aggregateData(vs []TruncatedPayment) (sortedByDate map[Date][]TruncatedPaym
 	return
 }
 
-func fillInVolumePerPayment(payments []TruncatedPayment) map[Date][]TruncatedPayment {
+func FillInVolumePerPayment(payments []TruncatedPayment) map[Date][]TruncatedPayment {
 	// Aggregate the Data. Returns the following:
 	// sortedByDate -- map[Date][]TruncatedPayment
 	// dates -- []Date
@@ -55,7 +54,7 @@ func fillInVolumePerPayment(payments []TruncatedPayment) map[Date][]TruncatedPay
 	// Get lumens prices for all time
 	lumenPrices := getStellarHistoricalData()
 
-	for _, v := range dates[:10] {
+	for _, v := range dates {
 		url := fmt.Sprintf("http://apilayer.net/api/live?access_key=%s&currencies=%s&date=%s", os.Getenv("CURRENCY_LAYER_API_KEY"), assetString, v)
 		client := &http.Client{}
 		req, _ := http.NewRequest("GET", url, nil)
