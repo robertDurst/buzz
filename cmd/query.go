@@ -18,7 +18,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/robertdurst/usd_volume_by_account/payments"
+	"github.com/robertdurst/buzz/payments"
 	"github.com/spf13/cobra"
 	"github.com/stellar/go/strkey"
 )

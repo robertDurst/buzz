@@ -1,6 +1,6 @@
 package main
 
-import "github.com/robertdurst/usd_volume_by_account/cmd"
+import "github.com/robertdurst/buzz/cmd"
 
 func main() {
 	cmd.Execute()

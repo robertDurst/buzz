@@ -8,12 +8,15 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "usd_volume_by_account",
+	Use:   "buzz",
 	Short: "A CLI tool to generate USD volume data for a given Stellar account.",
 	Long:  `A CLI tool to generate USD volume data for a given Stellar account. This will be used by Lightyear partners and the Lightyear partnership team to measure volume for particular accounts of interest.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// Do Stuff Here
-		fmt.Println("Works")
+		fmt.Println(`Probably not what you are looking for!
+			
+Consider running the --help command. 
+					
+To infinity and beyond!`)
 	},
 }
 
