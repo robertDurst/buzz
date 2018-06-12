@@ -9,7 +9,7 @@ CURRENCY_LAYER_API_KEY
 ```
 Then you have two options to install this:
 
-1. clone this repo, `cd buzz`, `go install`
+1. clone this repo, `cd buzz`, `go install`, 'dep ensure' (if you don't have dep, `brew install dep`)
 2. `go get github.com/robertdurst/buzz`
 
 Finally, query some account payment history!
