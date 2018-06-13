@@ -118,7 +118,7 @@ func OrderDataByMonth(data map[Date][]TruncatedPayment) [][]TruncatedPayment {
 		s := strings.Split(k, "-")
 		y := fmt.Sprintf("%s-%s", s[0], s[1])
 
-		if _, ok := m[y]; ok {
+		if _, ok := m[y]; !ok {
 			m[y] = v
 		} else {
 			m[y] = append(m[y], v...)
