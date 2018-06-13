@@ -15,16 +15,16 @@ Export as CSV and let your excel sheet wizards do their magic.
 
 ## Setup
 We will assume no previous setup.
-1. Install Brew: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+1. Install Brew: <br> `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Setup Go. I reccomend following [this tutorial]( http://sourabhbajaj.com/mac-setup/Go/README.html).
 3. Obtain a [Currencylayer](https://currencylayer.com/) API key. Fun fact, they don't actually validate any of your credentials so you can obtain as many keys as you want. *Note:* you only get 1000 request per month. 
-4. Move to go working directory. Example: `cd ~/go-workspace/src/github.com/`
-5. Make a `robertdurst` directory: `mkdir robertdurst && cd robertdurst`
-6. Clone this repo: `git clone https://github.com/robertDurst/buzz.git`
-7. Move to repo directory `cd buzz`
-8. Install [dep](https://github.com/golang/dep). This can be done via `brew install dep`.
-9. Install dependencies: `dep ensure`
-10. Install Buzz: `go install`
+4. Move to go working directory. Example:  <br>`cd ~/go-workspace/src/github.com/`
+5. Make a *robertdurst* directory:  <br>`mkdir robertdurst && cd robertdurst`
+6. Clone this repo:  <br>`git clone https://github.com/robertDurst/buzz.git`
+7. Move to repo directory  <br>`cd buzz`
+8. Install [dep](https://github.com/golang/dep). This can be done via:  <br> `brew install dep`.
+9. Install dependencies:  <br>`dep ensure`
+10. Install Buzz: <br> `go install`
 11. Query some account payment history!
 
 ## How to use
