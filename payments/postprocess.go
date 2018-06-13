@@ -11,8 +11,7 @@ import (
 	"strings"
 )
 
-// Create a CSV from a list of payments
-func CreateCSVRaw(data [][]TruncatedPayment, fileName string) {
+func CreateCSV(data [][]TruncatedPayment, fileName string, aggregate string) {
 	file, err := os.Create(fileName)
 	if err != nil {
 		log.Fatal("Cannot create file", err)
@@ -24,70 +23,46 @@ func CreateCSVRaw(data [][]TruncatedPayment, fileName string) {
 
 	// Slice for capturing data to append to csv
 	strV := make([][]string, 0)
-	// Add a header row to csv
-	strV = append(strV, []string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Volume in USD"})
-	for _, v := range data {
-		for _, p := range v {
-			strV = append(strV, []string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Volume_USD, 'f', 6, 64)})
+
+	switch aggregate {
+	case "day":
+		// Add a header row to csv
+		strV = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
+		for _, v := range data {
+			volume := 0.0
+			date := ""
+			for _, p := range v {
+				volume += p.Volume_USD
+				date = p.FormattedDate
+			}
+			strV = append(strV, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
+		}
+		break
+	case "month":
+		// Add a header row to csv
+		strV = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
+		for _, v := range data {
+			volume := 0.0
+			date := ""
+			for _, p := range v {
+				volume += p.Volume_USD
+
+				s := strings.Split(p.FormattedDate, "-")
+				date = fmt.Sprintf("%s-%s", s[0], s[1])
+			}
+			strV = append(strV, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
+		}
+		break
+	default:
+		// Add a header row to csv
+		strV = append(strV, []string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Volume in USD"})
+		for _, v := range data {
+			for _, p := range v {
+				strV = append(strV, []string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Volume_USD, 'f', 6, 64)})
+			}
 		}
 	}
 
-	writer.WriteAll(strV)
-}
-
-// Create a CSV from a list of payments
-func CreateCSVAggregateDay(data [][]TruncatedPayment, fileName string) {
-	file, err := os.Create(fileName)
-	if err != nil {
-		log.Fatal("Cannot create file", err)
-	}
-	defer file.Close()
-
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-
-	// Slice for capturing data to append to csv
-	strV := make([][]string, 0)
-	// Add a header row to csv
-	strV = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
-	for _, v := range data {
-		volume := 0.0
-		date := ""
-		for _, p := range v {
-			volume += p.Volume_USD
-			date = p.FormattedDate
-		}
-		strV = append(strV, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
-	}
-	writer.WriteAll(strV)
-}
-
-// Create a CSV from a list of payments
-func CreateCSVAggregateMonth(data [][]TruncatedPayment, fileName string) {
-	file, err := os.Create(fileName)
-	if err != nil {
-		log.Fatal("Cannot create file", err)
-	}
-	defer file.Close()
-
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-
-	// Slice for capturing data to append to csv
-	strV := make([][]string, 0)
-	// Add a header row to csv
-	strV = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
-	for _, v := range data {
-		volume := 0.0
-		date := ""
-		for _, p := range v {
-			volume += p.Volume_USD
-
-			s := strings.Split(p.FormattedDate, "-")
-			date = fmt.Sprintf("%s-%s", s[0], s[1])
-		}
-		strV = append(strV, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
-	}
 	writer.WriteAll(strV)
 }
 

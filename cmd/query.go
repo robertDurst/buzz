@@ -47,25 +47,23 @@ var queryCmd = &cobra.Command{
 		account := args[0]
 		filename := args[1]
 
-		lang := cmd.Flag("aggregate").Value.String()
+		aggregate := cmd.Flag("aggregate").Value.String()
 
 		p := payments.PaymentsForAccount(account)
 		data := payments.FillInVolumePerPayment(p)
 
-		switch lang {
+		orderedData := payments.OrderDataByDate(data)
+
+		switch aggregate {
 		case "day":
-			orderedData := payments.OrderDataByDate(data)
-			payments.CreateCSVAggregateDay(orderedData, fmt.Sprintf("%s.csv", filename))
+			orderedData = payments.OrderDataByDate(data)
 			break
 		case "month":
-			orderedData := payments.OrderDataByMonth(data)
-			payments.CreateCSVAggregateMonth(orderedData, fmt.Sprintf("%s.csv", filename))
-			break
-		default:
-			orderedData := payments.OrderDataByDate(data)
-			payments.CreateCSVRaw(orderedData, fmt.Sprintf("%s.csv", filename))
+			orderedData = payments.OrderDataByMonth(data)
 			break
 		}
+
+		payments.CreateCSV(orderedData, fmt.Sprintf("%s.csv", filename), aggregate)
 	},
 }
 
