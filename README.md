@@ -1,6 +1,8 @@
 # Buzz
 A Simple CLI tool to calculate an account's payment volume (USD) over time and output results.
 
+![Buzz Lightyear](https://i.pinimg.com/originals/92/d5/71/92d571103d621e62a053ac4f799e9225.jpg)
+
 ## Output
 Currently, there are two output options availible.
 ### Print to Screen
