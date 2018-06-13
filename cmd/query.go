@@ -44,8 +44,7 @@ var queryCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		account := args[0]
-		filename := args[1]
+		account, filename := args[0], args[1]
 
 		aggregate := cmd.Flag("aggregate").Value.String()
 		output := cmd.Flag("output").Value.String()
@@ -53,6 +52,7 @@ var queryCmd = &cobra.Command{
 		p := payments.PaymentsForAccount(account)
 		data := payments.FillInVolumePerPayment(p)
 
+		// Default
 		orderedData := payments.OrderDataByDate(data)
 
 		switch aggregate {
@@ -77,6 +77,6 @@ var queryCmd = &cobra.Command{
 
 func init() {
 	rootCmd.PersistentFlags().String("aggregate", "none", "aggregate data by time interval (accepted inputs: none, day, month)")
-	rootCmd.PersistentFlags().String("output", "termainl", "output type (accepted inputs: termainl, csv)")
+	rootCmd.PersistentFlags().String("output", "terminal", "output type (accepted inputs: terminal, csv)")
 	rootCmd.AddCommand(queryCmd)
 }
