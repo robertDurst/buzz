@@ -28,13 +28,14 @@ Finally, query some account payment history!
 
 Currently there is only one function:
 ```
-buzz query [stellar_address] [output_csv_filename] [flags]
+buzz query [stellar_address] [currencylayer_api_key] [flags]
 ```
 
 Flags
 ```
 --aggregate [day | month | none] // Time interval aggregating of data [DEFAULT: none]
 --output [csv | terminal] // Print to screen or save to csv [DEFAULT: terminal]
+--filename [ ANYTHING ] // Filename of csv to be saved [DEFAULT: results]
 ```
 
 ## Current State

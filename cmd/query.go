@@ -25,7 +25,7 @@ import (
 
 // queryCmd represents the query command
 var queryCmd = &cobra.Command{
-	Use:   "query [stellar address] [csv filename]",
+	Use:   "query [stellar address] [currencylayer api key]",
 	Short: "Query USD volume for a specific Stellar Address",
 	Long: `Queries for all payments to and from a specific account. Then
 		   calculates total USD volume per day via Currencylayer API
@@ -33,7 +33,7 @@ var queryCmd = &cobra.Command{
 		   in numerous ways, including raw and csv.`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 2 {
-			return errors.New("requires stellar address and csv filename")
+			return errors.New("requires stellar address and currencylayer api key")
 		}
 
 		_, err := strkey.Decode(strkey.VersionByteAccountID, args[0])
@@ -44,13 +44,14 @@ var queryCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		account, filename := args[0], args[1]
+		account, apikey := args[0], args[1]
 
 		aggregate := cmd.Flag("aggregate").Value.String()
 		output := cmd.Flag("output").Value.String()
+		filename := cmd.Flag("filename").Value.String()
 
 		p := payments.PaymentsForAccount(account)
-		data := payments.FillInVolumePerPayment(p)
+		data := payments.FillInVolumePerPayment(p, apikey)
 
 		// Default
 		orderedData := payments.OrderDataByDate(data)
@@ -78,5 +79,6 @@ var queryCmd = &cobra.Command{
 func init() {
 	rootCmd.PersistentFlags().String("aggregate", "none", "aggregate data by time interval (accepted inputs: none, day, month)")
 	rootCmd.PersistentFlags().String("output", "terminal", "output type (accepted inputs: terminal, csv)")
+	rootCmd.PersistentFlags().String("filename", "results", "csv output file name")
 	rootCmd.AddCommand(queryCmd)
 }

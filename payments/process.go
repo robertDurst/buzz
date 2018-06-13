@@ -9,7 +9,6 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"os"
 	"strconv"
 )
 
@@ -43,7 +42,7 @@ func aggregateData(vs []TruncatedPayment) (sortedByDate map[Date][]TruncatedPaym
 	return
 }
 
-func FillInVolumePerPayment(payments []TruncatedPayment) map[Date][]TruncatedPayment {
+func FillInVolumePerPayment(payments []TruncatedPayment, apikey string) map[Date][]TruncatedPayment {
 	// Aggregate the Data. Returns the following:
 	// sortedByDate -- map[Date][]TruncatedPayment
 	// dates -- []Date
@@ -55,7 +54,7 @@ func FillInVolumePerPayment(payments []TruncatedPayment) map[Date][]TruncatedPay
 	lumenPrices := getStellarHistoricalData()
 
 	for _, v := range dates {
-		url := fmt.Sprintf("http://apilayer.net/api/live?access_key=%s&currencies=%s&date=%s", os.Getenv("CURRENCY_LAYER_API_KEY"), assetString, v)
+		url := fmt.Sprintf("http://apilayer.net/api/live?access_key=%s&currencies=%s&date=%s", apikey, assetString, v)
 		client := &http.Client{}
 		req, _ := http.NewRequest("GET", url, nil)
 		req.Header.Add("Accept", "application/json")
