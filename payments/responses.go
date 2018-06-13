@@ -68,4 +68,6 @@ type TruncatedPayment struct {
 	AssetCode     string
 	Amount        string
 	Volume_USD    float64
+	SentRecv      string
+	FromTo        string
 }

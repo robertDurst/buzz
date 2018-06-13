@@ -57,10 +57,10 @@ func CreateCSV(data [][]TruncatedPayment, fileName string, aggregate string) {
 		break
 	default:
 		// Add a header row to csv
-		strV = append(strV, []string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Volume in USD"})
+		strV = append(strV, []string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Volume in USD", "Sent or Received", "From/To"})
 		for _, v := range data {
 			for _, p := range v {
-				strV = append(strV, []string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Volume_USD, 'f', 6, 64)})
+				strV = append(strV, []string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Volume_USD, 'f', 6, 64), p.SentRecv, p.FromTo})
 			}
 		}
 	}
@@ -100,10 +100,10 @@ func OutputData(data [][]TruncatedPayment, aggregate string) {
 		break
 	default:
 		// Add a header row to csv
-		table.SetHeader([]string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Volume in USD"})
+		table.SetHeader([]string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Volume in USD", "Sent or Received", "From/To"})
 		for _, v := range data {
 			for _, p := range v {
-				table.Append([]string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Volume_USD, 'f', 6, 64)})
+				table.Append([]string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Volume_USD, 'f', 6, 64), p.SentRecv, p.FromTo})
 			}
 		}
 	}

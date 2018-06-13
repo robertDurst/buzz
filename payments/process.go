@@ -94,6 +94,8 @@ func updateVolumeForDate(vsf []TruncatedPayment, date Date, cer CurrencyExchange
 				AssetCode:     v.AssetCode,
 				Amount:        v.Amount,
 				Volume_USD:    volume,
+				SentRecv:      v.SentRecv,
+				FromTo:        v.FromTo,
 			})
 		} else {
 			vsfz = append(vsfz, TruncatedPayment{
@@ -102,6 +104,8 @@ func updateVolumeForDate(vsf []TruncatedPayment, date Date, cer CurrencyExchange
 				AssetCode:     "XLM",
 				Amount:        v.Amount,
 				Volume_USD:    amt * lp,
+				SentRecv:      v.SentRecv,
+				FromTo:        v.FromTo,
 			})
 		}
 	}

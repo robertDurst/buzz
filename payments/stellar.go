@@ -37,14 +37,14 @@ func PaymentsForAccount(account string) []TruncatedPayment {
 			return (p.Account == "")
 		}
 
-		p := filterPayments(t.Embedded.Records, filterFunction)
+		p := filterPayments(t.Embedded.Records, filterFunction, account)
 
 		payments = append(payments, p...)
 	}
 	return payments
 }
 
-func filterPayments(vs []Payment, f func(Payment) bool) []TruncatedPayment {
+func filterPayments(vs []Payment, f func(Payment) bool, account string) []TruncatedPayment {
 	vsf := make([]TruncatedPayment, 0)
 	for _, v := range vs {
 		if f(v) {
@@ -56,12 +56,24 @@ func filterPayments(vs []Payment, f func(Payment) bool) []TruncatedPayment {
 				asset = v.AssetCode
 			}
 
+			var sentrevc string
+			var fromto string
+			if v.From == account {
+				sentrevc = "Sent"
+				fromto = v.To
+			} else {
+				sentrevc = "Received"
+				fromto = v.From
+			}
+
 			vsf = append(vsf, TruncatedPayment{
 				CreatedAt:     v.CreatedAt,
 				FormattedDate: stringToDateCurrencylayerFormat(v.CreatedAt),
 				AssetCode:     asset,
 				Amount:        v.Amount,
 				Volume_USD:    0,
+				SentRecv:      sentrevc,
+				FromTo:        fromto,
 			})
 		}
 	}
