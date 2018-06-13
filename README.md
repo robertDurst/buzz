@@ -1,5 +1,15 @@
 # Buzz
-A Simple CLI tool to calculate an account's payment volume (USD) over time. 
+A Simple CLI tool to calculate an account's payment volume (USD) over time and output results.
+
+## Output
+Currently, there are two output options availible.
+### Print to Screen
+Quick and easy... see the magic right before your eyes.
+![terminal output](https://imgur.com/crks1Nu.png)
+
+### Save to CSV
+Export as CSV and let your excel sheet wizards do their magic.
+![imported to sheets](https://imgur.com/WpqQV6C.png)
 
 ## Setup
 First, you will need a [Currencylayer](https://currencylayer.com/) api key.
@@ -27,10 +37,9 @@ Flags
 
 ## Current State
 * Only supports XLM and fiat based tokens
-* No data processing
 
 ## Future Work
-* Use an alternative currency, such as EUR, instead of USD
+* Use an alternative currency, such as EUR, instead of USD (**requires paid subscription**)
 
 ## Wish List
 * Fully functional web app
