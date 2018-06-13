@@ -14,24 +14,28 @@ Export as CSV and let your excel sheet wizards do their magic.
 ![imported to sheets](https://imgur.com/WpqQV6C.png)
 
 ## Setup
-First, you will need a [Currencylayer](https://currencylayer.com/) api key.
-Once you get this, add it as an environment variable:
-```
-CURRENCY_LAYER_API_KEY
-```
-Then you have two options to install this:
+We will assume no previous setup.
+1. Install Brew: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+2. Setup Go. I reccomend following [this tutorial]( http://sourabhbajaj.com/mac-setup/Go/README.html).
+3. Obtain a [Currencylayer](https://currencylayer.com/) API key. Fun fact, they don't actually validate any of your credentials so you can obtain as many keys as you want. *Note:* you only get 1000 request per month. 
+4. Move to go working directory. Example: `cd ~/go-workspace/src/github.com/`
+5. Make a `robertdurst` directory: `mkdir robertdurst && cd robertdurst`
+6. Clone this repo: `git clone https://github.com/robertDurst/buzz.git`
+7. Move to repo directory `cd buzz`
+8. Install [dep](https://github.com/golang/dep). This can be done via `brew install dep`.
+9. Install dependencies: `dep ensure`
+10. Install Buzz: `go install`
+11. Query some account payment history!
 
-1. clone this repo, `cd buzz`, `go install`, `dep ensure` (if you don't have dep, `brew install dep`)
-2. `go get github.com/robertdurst/buzz`
+## How to use
+This is a command line interace (CLI), so it is run via typing commands, arguments, and flags to the terminal.
 
-Finally, query some account payment history!
-
-Currently there is only one function:
+Currently there is only one command `query`. It is followed by two commands and then a set of optional flags:
 ```
 buzz query [stellar_address] [currencylayer_api_key] [flags]
 ```
 
-Flags
+**Flags**
 ```
 --aggregate [day | month | none] // Time interval aggregating of data [DEFAULT: none]
 --output [csv | terminal] // Print to screen or save to csv [DEFAULT: terminal]
@@ -43,6 +47,10 @@ Flags
 
 ## Future Work
 * Use an alternative currency, such as EUR, instead of USD (**requires paid subscription**)
+* Differentiating between sent and received payments
+* Automated bash script to run act as a *dashboard*
+* Output *unmatched assets* to let user know what assets were not included in volume calculation
+* Make a release for easier installation and use
 
 ## Wish List
 * Fully functional web app
