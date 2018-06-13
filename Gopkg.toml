@@ -17,3 +17,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/olekukonko/tablewriter"
+
+[[constraint]]
+  name = "github.com/fatih/color"
+  version = "1.7.0"

@@ -44,15 +44,28 @@ buzz query [stellar_address] [currencylayer_api_key] [flags]
 
 ## Current State
 * Only supports XLM and fiat based tokens
+* Current Raw Data Output Fields:
+    * CreatedAt (Raw)     - Raw date/time
+    * CreatedAt (Pretty)  - Pretty Printed date/time
+    * AssetCode
+    * Amount              - Native asset amount
+    * Price               - usd exchange rate
+    * Volume in USD
+    * Sent or Received    - Whether sent or Received
+    * From/To             - The stellar address of the sender/recipient
 
 ## Future Work
 * Use an alternative currency, such as EUR, instead of USD (**requires paid subscription**)
-* Differentiating between sent and received payments
 * Automated bash script to run act as a *dashboard*
-* Output *unmatched assets* to let user know what assets were not included in volume calculation
 * Make a release for easier installation and use
 
 ## Wish List
 * Fully functional web app
 * Programmatically generate graphs
 * Advanaced statistical analysis
+
+## Possible Result Messages
+* Success.
+* Success, but some assets were not matched.
+* Either bad API key, or this account only has non-native asset payments in payment history.
+* Part way through the API hit its limit.

@@ -70,4 +70,5 @@ type TruncatedPayment struct {
 	Volume_USD    float64
 	SentRecv      string
 	FromTo        string
+	Price         float64
 }
