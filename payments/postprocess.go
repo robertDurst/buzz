@@ -9,6 +9,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 func CreateCSV(data [][]TruncatedPayment, fileName string, aggregate string) {
@@ -64,6 +66,49 @@ func CreateCSV(data [][]TruncatedPayment, fileName string, aggregate string) {
 	}
 
 	writer.WriteAll(strV)
+}
+
+func OutputData(data [][]TruncatedPayment, aggregate string) {
+	table := tablewriter.NewWriter(os.Stdout)
+	switch aggregate {
+	case "day":
+		table.SetHeader([]string{"Created At (Pretty)", "Volume in USD"})
+		for _, v := range data {
+			volume := 0.0
+			date := ""
+			for _, p := range v {
+				volume += p.Volume_USD
+				date = p.FormattedDate
+			}
+			table.Append([]string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
+		}
+		break
+	case "month":
+		// Add a header row to csv
+		table.SetHeader([]string{"Created At (Pretty)", "Volume in USD"})
+		for _, v := range data {
+			volume := 0.0
+			date := ""
+			for _, p := range v {
+				volume += p.Volume_USD
+
+				s := strings.Split(p.FormattedDate, "-")
+				date = fmt.Sprintf("%s-%s", s[0], s[1])
+			}
+			table.Append([]string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
+		}
+		break
+	default:
+		// Add a header row to csv
+		table.SetHeader([]string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Volume in USD"})
+		for _, v := range data {
+			for _, p := range v {
+				table.Append([]string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Volume_USD, 'f', 6, 64)})
+			}
+		}
+	}
+
+	table.Render()
 }
 
 // Sort data by date

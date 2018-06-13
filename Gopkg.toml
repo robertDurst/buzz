@@ -13,3 +13,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/stellar/go"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/olekukonko/tablewriter"

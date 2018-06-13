@@ -21,11 +21,11 @@ buzz query [stellar_address] [output_csv_filename] [flags]
 
 Flags
 ```
---aggregate [day | month | none]
+--aggregate [day | month | none] // Time interval aggregating of data [DEFAULT: none]
+--output [csv | terminal] // Print to screen or save to csv [DEFAULT: terminal]
 ```
 
 ## Current State
-* Only option is to output a CSV
 * Only supports XLM and fiat based tokens
 * No data processing
 
