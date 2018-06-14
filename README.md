@@ -25,7 +25,18 @@ We will assume no previous setup.
 8. Install [dep](https://github.com/golang/dep). This can be done via:  <br> `brew install dep`.
 9. Install dependencies:  <br>`dep ensure`
 10. Install Buzz: <br> `go install`
-11. Query some account payment history!
+
+To test if it worked, type `buzz` and you should see:
+
+```
+Probably not what you are looking for!
+			
+Consider running the --help command. 
+					
+To infinity and beyond!
+```
+
+*If you get errors about GO PATH, try `source ~/.bashrc` or whatever script you have your go setup with, to reinitialize the GO PATH.*
 
 ## How to use
 This is a command line interace (CLI), so it is run via typing commands, arguments, and flags to the terminal.
