@@ -38,6 +38,12 @@ To infinity and beyond!
 
 *If you get errors about GO PATH, try `source ~/.bashrc` or whatever script you have your go setup with, to reinitialize the GO PATH.*
 
+## Easy Install
+Assuming you followed step #1 - #3 above, you can install this CLI tool:
+```
+github.com/robertdurst/buzz
+```
+
 ## How to use
 This is a command line interace (CLI), so it is run via typing commands, arguments, and flags to the terminal.
 
