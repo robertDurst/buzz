@@ -4,13 +4,6 @@ type CurrencyExchangeResponse struct {
 	Quotes map[string]float64 `json:"quotes"`
 }
 
-type Date = string
-
-type Link struct {
-	Href      string `json:"href"`
-	Templated bool   `json:"templated,omitempty"`
-}
-
 type Payment struct {
 	ID          string `json:"id"`
 	Type        string `json:"type"`
@@ -51,23 +44,23 @@ type Payment struct {
 	}
 }
 
+// Notice I removed the Link variable
+// since I don't think it is necessary.
 type PaymentsPage struct {
-	Links struct {
-		Self Link `json:"self"`
-		Next Link `json:"next"`
-		Prev Link `json:"prev"`
-	} `json:"_links"`
 	Embedded struct {
 		Records []Payment `json:"records"`
 	} `json:"_embedded"`
 }
 
+// Custom data struct that represents
+// a subset of the payments fields
+// that I have deemed interesting.
 type TruncatedPayment struct {
-	CreatedAt     Date
-	FormattedDate Date
+	CreatedAt     string
+	FormattedDate string
 	AssetCode     string
 	Amount        string
-	Volume_USD    float64
+	VolumeUSD     float64
 	SentRecv      string
 	FromTo        string
 	Price         float64

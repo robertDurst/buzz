@@ -14,11 +14,11 @@ import (
 	"github.com/fatih/color"
 )
 
-func aggregateData(vs []TruncatedPayment) (sortedByDate map[Date][]TruncatedPayment, dates []Date, assetString string) {
+func aggregateData(vs []TruncatedPayment) (sortedByDate map[string][]TruncatedPayment, dates []string, assetString string) {
 	var buffer bytes.Buffer
-	sortedByDate = make(map[Date][]TruncatedPayment)
+	sortedByDate = make(map[string][]TruncatedPayment)
 	assets := make(map[string]bool)
-	dates = make([]Date, 0)
+	dates = make([]string, 0)
 	for _, v := range vs {
 		if _, ok := sortedByDate[v.FormattedDate]; ok {
 			sortedByDate[v.FormattedDate] = append(sortedByDate[v.FormattedDate], v)
@@ -44,13 +44,13 @@ func aggregateData(vs []TruncatedPayment) (sortedByDate map[Date][]TruncatedPaym
 	return
 }
 
-func FillInVolumePerPayment(payments []TruncatedPayment, apikey string) map[Date][]TruncatedPayment {
+func FillInVolumePerPayment(payments []TruncatedPayment, apikey string) map[string][]TruncatedPayment {
 	// Aggregate the Data. Returns the following:
-	// sortedByDate -- map[Date][]TruncatedPayment
-	// dates -- []Date
+	// sortedByDate -- map[string][]TruncatedPayment
+	// dates -- []string
 	// assets -- string (ASSET1,ASSET2,ASSET3)
 	allData, dates, assetString := aggregateData(payments)
-	returnData := make(map[Date][]TruncatedPayment)
+	returnData := make(map[string][]TruncatedPayment)
 
 	// Get lumens prices for all time
 	lumenPrices := getStellarHistoricalData()
@@ -154,7 +154,7 @@ func currencylayerIntegrityCheck(m map[string][]float64, expectedLength int) (st
 	return "ok", buffer.String()
 }
 
-func updateVolumeForDate(vsf []TruncatedPayment, date Date, cer CurrencyExchangeResponse, lp float64) []TruncatedPayment {
+func updateVolumeForDate(vsf []TruncatedPayment, date string, cer CurrencyExchangeResponse, lp float64) []TruncatedPayment {
 	vsfz := make([]TruncatedPayment, 0)
 	for _, v := range vsf {
 		amt, _ := strconv.ParseFloat(v.Amount, 64)
@@ -172,7 +172,7 @@ func updateVolumeForDate(vsf []TruncatedPayment, date Date, cer CurrencyExchange
 				FormattedDate: stringToDateCurrencylayerFormat(v.CreatedAt),
 				AssetCode:     v.AssetCode,
 				Amount:        v.Amount,
-				Volume_USD:    volume,
+				VolumeUSD:     volume,
 				SentRecv:      v.SentRecv,
 				FromTo:        v.FromTo,
 				Price:         1 / exchange,
@@ -183,7 +183,7 @@ func updateVolumeForDate(vsf []TruncatedPayment, date Date, cer CurrencyExchange
 				FormattedDate: stringToDateCurrencylayerFormat(v.CreatedAt),
 				AssetCode:     "XLM",
 				Amount:        v.Amount,
-				Volume_USD:    amt * lp,
+				VolumeUSD:     amt * lp,
 				SentRecv:      v.SentRecv,
 				FromTo:        v.FromTo,
 				Price:         lp,

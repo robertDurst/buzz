@@ -11,6 +11,8 @@ func PaymentsForAccount(account string) []TruncatedPayment {
 	payments := make([]TruncatedPayment, 0)
 
 	lens := 200
+
+	// Paging token used to increment through the payments sequentially
 	pagingToken := "0"
 
 	for lens == 200 {
@@ -33,6 +35,7 @@ func PaymentsForAccount(account string) []TruncatedPayment {
 		}
 		pagingToken = t.Embedded.Records[lens-1].PagingToken
 
+		// Filter out merge account and create account methods
 		filterFunction := func(p Payment) bool {
 			return (p.Account == "")
 		}
@@ -49,6 +52,9 @@ func filterPayments(vs []Payment, f func(Payment) bool, account string) []Trunca
 	for _, v := range vs {
 		if f(v) {
 
+			// Here insert mappings for tokens that don't quites
+			// reflect the FIAT ticker.
+			// Ex: EURT --> EUR
 			var asset string
 			if v.AssetCode == "EURT" {
 				asset = "EUR"
@@ -71,7 +77,7 @@ func filterPayments(vs []Payment, f func(Payment) bool, account string) []Trunca
 				FormattedDate: stringToDateCurrencylayerFormat(v.CreatedAt),
 				AssetCode:     asset,
 				Amount:        v.Amount,
-				Volume_USD:    0,
+				VolumeUSD:     0,
 				SentRecv:      sentrevc,
 				FromTo:        fromto,
 			})
