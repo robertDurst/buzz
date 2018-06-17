@@ -38,11 +38,27 @@ To infinity and beyond!
 
 *If you get errors about GO PATH, try `source ~/.bashrc` or whatever script you have your go setup with, to reinitialize the GO PATH.*
 
-## Easy Install
-Assuming you followed step #1 - #3 above, you can install this CLI tool:
+## Easy Install (Released Version)
+Go to the release page and install the binary -- this will be the package named `Buzz`.
+
+Once it is downloaded, open up the terminal. This will assume that the packages has been downloaded to your `Downloads` directory (and of course you are using a unix system).
+
 ```
-github.com/robertdurst/buzz
+cd ~/Downloads
+chmod a+x ./buzz
 ```
+
+Now type `./buzz` and you should see:
+
+```
+Probably not what you are looking for!
+			
+Consider running the --help command. 
+					
+To infinity and beyond!
+```
+
+*If using the binary, for all commands belowing using `buzz`, replace with `./buzz`.
 
 ## How to use
 This is a command line interace (CLI), so it is run via typing commands, arguments, and flags to the terminal.
@@ -74,7 +90,6 @@ buzz query [stellar_address] [currencylayer_api_key] [flags]
 ## Future Work
 * Use an alternative currency, such as EUR, instead of USD (**requires paid subscription**)
 * Automated bash script to run act as a *dashboard*
-* Make a release for easier installation and use
 
 ## Wish List
 * Fully functional web app
