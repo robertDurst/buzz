@@ -23,40 +23,39 @@ func decodeResponse(resp *http.Response, object interface{}) (err error) {
 	return
 }
 
-func stringToDateSortFormat(t string) int {
+func stringToUnixTimeStamp(t string) int {
+	var year, month, date string
 	s := strings.Split(t, "-")
-	year, month, date := s[0], s[1], s[2]
-	if len(date) == 1 {
-		date = fmt.Sprintf("0%v", date)
+	if len(s) == 3 {
+		year, month, date = s[0], s[1], s[2]
+		if len(date) == 1 {
+			date = fmt.Sprintf("0%v", date)
+		}
+	} else {
+		year, month, date = s[0], s[1], "01"
 	}
+
 	formattedTime, _ := time.Parse(time.RFC3339Nano, fmt.Sprintf("%v-%v-%vT15:04:05Z", year, month, date))
 	return int(formattedTime.Unix())
 }
 
-func stringToDateSortFormat2(t string) int {
-	s := strings.Split(t, "-")
-	year, month := s[0], s[1]
-	formattedTime, _ := time.Parse(time.RFC3339Nano, fmt.Sprintf("%v-%v-01T15:04:05Z", year, month))
-	return int(formattedTime.Unix())
-}
-
-func stringToDateLumenFormat(t string) string {
-	mon, date, year := strings.Fields(t)[0], strings.Fields(t)[1][:len(strings.Fields(t)[1])-1], strings.Fields(t)[2]
+func stringToDateLumenFormat(ti string) string {
+	t := strings.Fields(ti)
+	mon, date, year := t[0], t[1][:len(t[1])-1], t[2]
 	formattedTime, _ := time.Parse(time.RFC822, fmt.Sprintf("%v %v %v 12:00 MST", date, mon, year[2:]))
-	y, month, day := formattedTime.Date()
-	d := strconv.Itoa(day)
-	m := monthWordToNumber(month)
-	if len(d) == 1 {
-		d = fmt.Sprintf("0%v", d)
-	}
-	return fmt.Sprintf("%v-%v-%v", y, m, d)
+
+	return timeToString(formattedTime)
 }
 
 func stringToDateCurrencylayerFormat(t string) string {
-	date, _ := time.Parse(time.RFC3339, t)
-	y, month, day := date.Date()
+	formattedTime, _ := time.Parse(time.RFC3339, t)
+	return timeToString(formattedTime)
+}
+
+func timeToString(formattedDate time.Time) string {
+	y, month, day := formattedDate.Date()
 	d := strconv.Itoa(day)
-	m := monthWordToNumber(month)
+	m := monthStringToNumber(month)
 	if len(d) == 1 {
 		d = fmt.Sprintf("0%v", d)
 	}
@@ -64,7 +63,7 @@ func stringToDateCurrencylayerFormat(t string) string {
 	return fmt.Sprintf("%v-%v-%v", y, m, d)
 }
 
-func monthWordToNumber(month time.Month) string {
+func monthStringToNumber(month time.Month) string {
 	m := ""
 	switch month.String()[:3] {
 	case "Jan":
@@ -113,8 +112,8 @@ func OrderDataByDate(data map[string][]TruncatedPayment) [][]TruncatedPayment {
 	var keys []int
 	keyToString := make(map[int]string)
 	for k := range data {
-		keys = append(keys, stringToDateSortFormat(k))
-		keyToString[stringToDateSortFormat(k)] = k
+		keys = append(keys, stringToUnixTimeStamp(k))
+		keyToString[stringToUnixTimeStamp(k)] = k
 	}
 
 	sort.Ints(keys)
@@ -145,8 +144,8 @@ func OrderDataByMonth(data map[string][]TruncatedPayment) [][]TruncatedPayment {
 	var keys []int
 	keyToString := make(map[int]string)
 	for k := range m {
-		keys = append(keys, stringToDateSortFormat2(k))
-		keyToString[stringToDateSortFormat2(k)] = k
+		keys = append(keys, stringToUnixTimeStamp(k))
+		keyToString[stringToUnixTimeStamp(k)] = k
 	}
 
 	sort.Ints(keys)

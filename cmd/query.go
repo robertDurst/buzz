@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/robertdurst/buzz/payments"
 	"github.com/spf13/cobra"
@@ -44,33 +43,40 @@ var queryCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		var agg payments.Aggregate
+
+		// capture arguments
 		account, apikey := args[0], args[1]
 
+		// capture flags
 		aggregate := cmd.Flag("aggregate").Value.String()
 		output := cmd.Flag("output").Value.String()
 		filename := cmd.Flag("filename").Value.String()
 
+		// get all payments for account from horizon
 		p := payments.PaymentsForAccount(account)
-		data := payments.FillInVolumePerPayment(p, apikey)
 
-		// Default
-		orderedData := payments.OrderDataByDate(data)
+		// utilize coinmarketcap and currencylayer to
+		// gather and fill in the usd payments volumes
+		rawdata := payments.FillInVolumePerPayment(p, apikey)
 
 		switch aggregate {
 		case "day":
-			orderedData = payments.OrderDataByDate(data)
+			agg = payments.ByDate{Data: payments.OrderDataByDate(rawdata), FileName: filename}
 			break
 		case "month":
-			orderedData = payments.OrderDataByMonth(data)
+			agg = payments.ByMonth{Data: payments.OrderDataByMonth(rawdata), FileName: filename}
 			break
+		default:
+			agg = payments.Raw{Data: payments.OrderDataByDate(rawdata), FileName: filename}
 		}
 
 		switch output {
 		case "csv":
-			payments.CreateCSV(orderedData, fmt.Sprintf("%s.csv", filename), aggregate)
+			agg.CreateCSV()
 			break
 		default:
-			payments.OutputData(orderedData, aggregate)
+			agg.OutputData()
 			break
 		}
 	},
