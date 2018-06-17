@@ -35,7 +35,9 @@ func aggregateData(vs []TruncatedPayment) (sortedByDate map[string][]TruncatedPa
 	}
 
 	assetString = buffer.String()
-	if assetString[0] == ',' {
+	if len(assetString) == 0 {
+		return
+	} else if assetString[0] == ',' {
 		assetString = assetString[1 : len(assetString)-2]
 	} else {
 		assetString = assetString[:len(assetString)-2]
