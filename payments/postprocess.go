@@ -1,4 +1,3 @@
-// Post Process contains methods for sorting and outputing data.
 package payments
 
 import (
@@ -13,17 +12,12 @@ import (
 )
 
 type Aggregate interface {
-	CreateCSV()
-	OutputData()
+	FormatCSV(strV [][]string) (csv [][]string)
+	FormatTable(table *tablewriter.Table)
 }
 
-type Raw struct {
-	Data     [][]TruncatedPayment
-	FileName string
-}
-
-func (r Raw) CreateCSV() {
-	file, err := os.Create(r.FileName)
+func CreateCSV(a Aggregate, filename string) {
+	file, err := os.Create(fmt.Sprintf("%s.csv", filename))
 	if err != nil {
 		log.Fatal("Cannot create file", err)
 	}
@@ -35,20 +29,32 @@ func (r Raw) CreateCSV() {
 	// Slice for capturing data to append to csv
 	strV := make([][]string, 0)
 
-	// Add a header row to csv
-	strV = append(strV, []string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Price", "Volume in USD", "Sent or Received", "From/To"})
-	for _, v := range r.Data {
-		for _, p := range v {
-			strV = append(strV, []string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Price, 'f', 6, 64), strconv.FormatFloat(p.VolumeUSD, 'f', 6, 64), p.SentRecv, p.FromTo})
-		}
-	}
-	writer.WriteAll(strV)
+	// Write formatted data to csv
+	writer.WriteAll(a.FormatCSV(strV))
 }
 
-func (r Raw) OutputData() {
-	table := tablewriter.NewWriter(os.Stdout)
+func CreateTable(a Aggregate) {
+	t := tablewriter.NewWriter(os.Stdout)
+	a.FormatTable(t)
+}
 
+type Raw struct {
+	Data [][]TruncatedPayment
+}
+
+func (r Raw) FormatCSV(strV [][]string) (csv [][]string) {
 	// Add a header row to csv
+	csv = append(strV, []string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Price", "Volume in USD", "Sent or Received", "From/To"})
+	for _, v := range r.Data {
+		for _, p := range v {
+			csv = append(csv, []string{p.CreatedAt, p.FormattedDate, p.AssetCode, p.Amount, strconv.FormatFloat(p.Price, 'f', 6, 64), strconv.FormatFloat(p.VolumeUSD, 'f', 6, 64), p.SentRecv, p.FromTo})
+		}
+	}
+	return
+}
+
+func (r Raw) FormatTable(table *tablewriter.Table) {
+	// Add a header row to table
 	table.SetHeader([]string{"Created At (Raw)", "Created At (Pretty)", "Asset Code", "Amount", "Price", "Volume in USD", "Sent or Received", "From/To"})
 	for _, v := range r.Data {
 		for _, p := range v {
@@ -60,25 +66,12 @@ func (r Raw) OutputData() {
 }
 
 type ByDate struct {
-	Data     [][]TruncatedPayment
-	FileName string
+	Data [][]TruncatedPayment
 }
 
-func (b ByDate) CreateCSV() {
-	file, err := os.Create(b.FileName)
-	if err != nil {
-		log.Fatal("Cannot create file", err)
-	}
-	defer file.Close()
-
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-
-	// Slice for capturing data to append to csv
-	strV := make([][]string, 0)
-
+func (b ByDate) FormatCSV(strV [][]string) (csv [][]string) {
 	// Add a header row to csv
-	strV = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
+	csv = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
 	for _, v := range b.Data {
 		volume := 0.0
 		date := ""
@@ -86,15 +79,13 @@ func (b ByDate) CreateCSV() {
 			volume += p.VolumeUSD
 			date = p.FormattedDate
 		}
-		strV = append(strV, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
+		csv = append(csv, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
 	}
-	writer.WriteAll(strV)
+	return
 }
 
-func (b ByDate) OutputData() {
-	table := tablewriter.NewWriter(os.Stdout)
-
-	// Add a header row to csv
+func (b ByDate) FormatTable(table *tablewriter.Table) {
+	// Add a header row to table
 	table.SetHeader([]string{"Created At (Pretty)", "Volume in USD"})
 	for _, v := range b.Data {
 		volume := 0.0
@@ -110,25 +101,12 @@ func (b ByDate) OutputData() {
 }
 
 type ByMonth struct {
-	Data     [][]TruncatedPayment
-	FileName string
+	Data [][]TruncatedPayment
 }
 
-func (b ByMonth) CreateCSV() {
-	file, err := os.Create(b.FileName)
-	if err != nil {
-		log.Fatal("Cannot create file", err)
-	}
-	defer file.Close()
-
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-
-	// Slice for capturing data to append to csv
-	strV := make([][]string, 0)
-
+func (b ByMonth) FormatCSV(strV [][]string) (csv [][]string) {
 	// Add a header row to csv
-	strV = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
+	csv = append(strV, []string{"Created At (Pretty)", "Volume in USD"})
 	for _, v := range b.Data {
 		volume := 0.0
 		date := ""
@@ -138,15 +116,14 @@ func (b ByMonth) CreateCSV() {
 			s := strings.Split(p.FormattedDate, "-")
 			date = fmt.Sprintf("%s-%s", s[0], s[1])
 		}
-		strV = append(strV, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
+		csv = append(csv, []string{date, strconv.FormatFloat(volume, 'f', 6, 64)})
 	}
-	writer.WriteAll(strV)
+
+	return
 }
 
-func (b ByMonth) OutputData() {
-	table := tablewriter.NewWriter(os.Stdout)
-
-	// Add a header row to csv
+func (b ByMonth) FormatTable(table *tablewriter.Table) {
+	// Add a header row to table
 	table.SetHeader([]string{"Created At (Pretty)", "Volume in USD"})
 	for _, v := range b.Data {
 		volume := 0.0

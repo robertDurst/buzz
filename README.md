@@ -13,7 +13,7 @@ Quick and easy... see the magic right before your eyes.
 Export as CSV and let your excel sheet wizards do their magic.
 ![imported to sheets](https://imgur.com/WpqQV6C.png)
 
-## Setup
+## Setup for Development
 We will assume no previous setup.
 1. Install Brew: <br> `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Setup Go. I reccomend following [this tutorial]( http://sourabhbajaj.com/mac-setup/Go/README.html).
@@ -38,7 +38,7 @@ To infinity and beyond!
 
 *If you get errors about GO PATH, try `source ~/.bashrc` or whatever script you have your go setup with, to reinitialize the GO PATH.*
 
-## Easy Install (Released Version)
+## Easy Install for General Use (Released Version)
 Go to the [release page](https://github.com/robertDurst/buzz/releases) and install the binary -- this will be the package named `Buzz`.
 
 Once it is downloaded, open up the terminal. This will assume that the packages has been downloaded to your `Downloads` directory (and of course you are using a unix system).
@@ -89,7 +89,7 @@ buzz query [stellar_address] [currencylayer_api_key] [flags]
 
 ## Future Work
 * Use an alternative currency, such as EUR, instead of USD (**requires paid subscription**)
-* Automated bash script to run act as a *dashboard*
+* Automated bash script to display as a *dashboard*
 
 ## Wish List
 * Fully functional web app

@@ -109,6 +109,8 @@ func FillInVolumePerPayment(payments []TruncatedPayment, apikey string) map[stri
 	return returnData
 }
 
+// currencylayerIntegrityCheck parses through the currencylayer response and checks to see
+// if a) api key hit limited and b) if some assets were not found (ex: MOBI)
 func currencylayerIntegrityCheck(m map[string][]float64, expectedLength int) (string, string) {
 	var buffer bytes.Buffer
 	totalZero := make([]string, 0)

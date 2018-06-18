@@ -1,9 +1,18 @@
 package payments
 
+// CurrencyExchangeResponse is used to
+// capture the currencylayer responses.
 type CurrencyExchangeResponse struct {
 	Quotes map[string]float64 `json:"quotes"`
 }
 
+// Payment is a data structure copy-pasta
+// from the Horizon Client. It is not great
+// since it just lump sums all payments
+// together. However it is fine for our
+// purpose here since we just use the
+// Account field to filter out create
+// account and merge account operations.
 type Payment struct {
 	ID          string `json:"id"`
 	Type        string `json:"type"`
@@ -44,15 +53,15 @@ type Payment struct {
 	}
 }
 
-// Notice I removed the Link variable
-// since I don't think it is necessary.
-type PaymentsPage struct {
+// PaymentsPage removes the Link variable
+// since it is not necessary.
+type Page struct {
 	Embedded struct {
 		Records []Payment `json:"records"`
 	} `json:"_embedded"`
 }
 
-// Custom data struct that represents
+// TruncatedPayment is a custom data struct that represents
 // a subset of the payments fields
 // that I have deemed interesting.
 type TruncatedPayment struct {

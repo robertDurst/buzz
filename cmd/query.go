@@ -62,21 +62,21 @@ var queryCmd = &cobra.Command{
 
 		switch aggregate {
 		case "day":
-			agg = payments.ByDate{Data: payments.OrderDataByDate(rawdata), FileName: filename}
+			agg = payments.ByDate{Data: payments.OrderDataByDate(rawdata)}
 			break
 		case "month":
-			agg = payments.ByMonth{Data: payments.OrderDataByMonth(rawdata), FileName: filename}
+			agg = payments.ByMonth{Data: payments.OrderDataByMonth(rawdata)}
 			break
 		default:
-			agg = payments.Raw{Data: payments.OrderDataByDate(rawdata), FileName: filename}
+			agg = payments.Raw{Data: payments.OrderDataByDate(rawdata)}
 		}
 
 		switch output {
 		case "csv":
-			agg.CreateCSV()
+			payments.CreateCSV(agg, filename)
 			break
 		default:
-			agg.OutputData()
+			payments.CreateTable(agg)
 			break
 		}
 	},

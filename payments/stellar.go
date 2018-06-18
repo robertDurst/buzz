@@ -23,7 +23,7 @@ func PaymentsForAccount(account string) []TruncatedPayment {
 		}
 		defer resp.Body.Close()
 
-		var t PaymentsPage
+		var t Page
 		err = decodeResponse(resp, &t)
 		if err != nil {
 			log.Fatal(err)
@@ -47,12 +47,12 @@ func PaymentsForAccount(account string) []TruncatedPayment {
 	return payments
 }
 
-func filterPayments(vs []Payment, f func(Payment) bool, account string) []TruncatedPayment {
-	vsf := make([]TruncatedPayment, 0)
-	for _, v := range vs {
+func filterPayments(p []Payment, f func(Payment) bool, account string) []TruncatedPayment {
+	payments := make([]TruncatedPayment, 0)
+	for _, v := range p {
 		if f(v) {
 
-			// Here insert mappings for tokens that don't quites
+			// Here insert mappings for tokens that don't quite
 			// reflect the FIAT ticker.
 			// Ex: EURT --> EUR
 			var asset string
@@ -62,6 +62,9 @@ func filterPayments(vs []Payment, f func(Payment) bool, account string) []Trunca
 				asset = v.AssetCode
 			}
 
+			// Here capture two metadata variables for the raw output:
+			// 	1. Whether the payment was sent or received
+			// 	2. The counter party address (if sent, the recipient, if received, the sender)
 			var sentrevc string
 			var fromto string
 			if v.From == account {
@@ -72,7 +75,7 @@ func filterPayments(vs []Payment, f func(Payment) bool, account string) []Trunca
 				fromto = v.From
 			}
 
-			vsf = append(vsf, TruncatedPayment{
+			payments = append(payments, TruncatedPayment{
 				CreatedAt:     v.CreatedAt,
 				FormattedDate: stringToDateCurrencylayerFormat(v.CreatedAt),
 				AssetCode:     asset,
@@ -83,5 +86,5 @@ func filterPayments(vs []Payment, f func(Payment) bool, account string) []Trunca
 			})
 		}
 	}
-	return vsf
+	return payments
 }
