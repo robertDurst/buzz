@@ -39,7 +39,7 @@ To infinity and beyond!
 *If you get errors about GO PATH, try `source ~/.bashrc` or whatever script you have your go setup with, to reinitialize the GO PATH.*
 
 ## Easy Install (Released Version)
-Go to the release page and install the binary -- this will be the package named `Buzz`.
+Go to the [release page](https://github.com/robertDurst/buzz/releases) and install the binary -- this will be the package named `Buzz`.
 
 Once it is downloaded, open up the terminal. This will assume that the packages has been downloaded to your `Downloads` directory (and of course you are using a unix system).
 
