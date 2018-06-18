@@ -10,7 +10,7 @@ import (
 )
 
 // GetStellarHistoricalData retreives all historical data of XLM by date.
-// Note: here we use the closing price as there is not an average price for the day.
+// Note: here we use the opening price as there is not an average price for the day.
 func getStellarHistoricalData() map[string]float64 {
 	// Note we used hardcoded dates.
 	// The start date is the beginning
@@ -41,8 +41,8 @@ func getStellarHistoricalData() map[string]float64 {
 				date = z.Text()
 			}
 
-			// Capture the close price
-			if q == 4 {
+			// Capture the open price
+			if q == 1 {
 				price, err = strconv.ParseFloat(z.Text(), 64)
 				if err != nil {
 					log.Fatal(err)
