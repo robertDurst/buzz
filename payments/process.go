@@ -96,16 +96,16 @@ func FillInVolumePerPayment(payments []TruncatedPayment, apikey string) map[stri
 	switch resultMsg {
 	case "api bad or all non-fiat assets":
 		color.Red("Either bad API key, this account only has non-native asset payments in payment history, or account contains XLM payments from today.")
-		color.Blue("The following assets were not matched: %s\n", assetString)
+		color.Blue("The following assets were not matched: %s", assetString)
 		break
 	case "api bad part way through":
-		color.Red("Part way through the API hit its limit\n")
+		color.Red("Part way through the API hit its limit")
 		break
 	case "ok some non-natives":
-		color.Blue("The following assets were not matched: %s\n", unmatchedAssets)
+		color.Blue("The following assets were not matched: %s", unmatchedAssets)
 		break
 	case "ok":
-		color.Green("Success!\n")
+		// color.Green("Success!")
 		break
 	}
 
