@@ -95,7 +95,7 @@ func FillInVolumePerPayment(payments []TruncatedPayment, apikey string) map[stri
 
 	switch resultMsg {
 	case "api bad or all non-fiat assets":
-		color.Red("Either bad API key, or this account only has non-native asset payments in payment history.")
+		color.Red("Either bad API key, this account only has non-native asset payments in payment history, or account contains XLM payments from today.")
 		color.Blue("The following assets were not matched: %s", assetString)
 		break
 	case "api bad part way through":
@@ -108,6 +108,9 @@ func FillInVolumePerPayment(payments []TruncatedPayment, apikey string) map[stri
 		color.Green("Success!")
 		break
 	}
+
+	// Create a nice break between the success message and the table
+	fmt.Println()
 
 	return returnData
 }

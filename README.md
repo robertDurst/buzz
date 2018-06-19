@@ -71,7 +71,7 @@ buzz query [stellar_address] [currencylayer_api_key] [flags]
 **Flags**
 ```
 --aggregate [day | month | none] // Time interval aggregating of data [DEFAULT: none]
---output [csv | terminal] // Print to screen or save to csv [DEFAULT: terminal]
+--output [csv | terminal, markdown] // Print to screen, create markdown, or save to csv [DEFAULT: terminal]
 --filename [ ANYTHING ] // Filename of csv to be saved [DEFAULT: results]
 ```
 
