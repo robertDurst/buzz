@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/guptarohit/asciigraph"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -15,6 +16,7 @@ type Aggregate interface {
 	FormatCSV(strV [][]string) (csv [][]string)
 	FormatTable(table *tablewriter.Table)
 	FormatMarkdown(table *tablewriter.Table)
+	FormatGraph()
 }
 
 func CreateCSV(a Aggregate, filename string) {
@@ -42,6 +44,10 @@ func CreateTable(a Aggregate) {
 func CreateMarkdown(a Aggregate) {
 	t := tablewriter.NewWriter(os.Stdout)
 	a.FormatMarkdown(t)
+}
+
+func CreateGraph(a Aggregate) {
+	a.FormatGraph()
 }
 
 type Raw struct {
@@ -83,6 +89,18 @@ func (r Raw) FormatMarkdown(table *tablewriter.Table) {
 	}
 
 	table.Render()
+}
+
+func (r Raw) FormatGraph() {
+	data := make([]float64, 0)
+	for _, v := range r.Data {
+		for _, p := range v {
+			data = append(data, p.VolumeUSD)
+		}
+	}
+
+	graph := asciigraph.Plot(data, asciigraph.Height(10), asciigraph.Width(50), asciigraph.Caption("Volume vs. Time (Raw -- no Aggregation)"))
+	fmt.Println(graph)
 }
 
 type ByDate struct {
@@ -136,6 +154,20 @@ func (b ByDate) FormatMarkdown(table *tablewriter.Table) {
 	}
 
 	table.Render()
+}
+
+func (b ByDate) FormatGraph() {
+	data := make([]float64, 0)
+	for _, v := range b.Data {
+		volume := 0.0
+		for _, p := range v {
+			volume += p.VolumeUSD
+		}
+		data = append(data, volume)
+	}
+
+	graph := asciigraph.Plot(data, asciigraph.Height(10), asciigraph.Width(50), asciigraph.Caption("Volume vs. Time (Aggregated by Day)"))
+	fmt.Println(graph)
 }
 
 type ByMonth struct {
@@ -196,4 +228,18 @@ func (b ByMonth) FormatMarkdown(table *tablewriter.Table) {
 	}
 
 	table.Render()
+}
+
+func (b ByMonth) FormatGraph() {
+	data := make([]float64, 0)
+	for _, v := range b.Data {
+		volume := 0.0
+		for _, p := range v {
+			volume += p.VolumeUSD
+		}
+		data = append(data, volume)
+	}
+
+	graph := asciigraph.Plot(data, asciigraph.Height(10), asciigraph.Width(50), asciigraph.Caption("Volume vs. Time (Aggregated by Month)"))
+	fmt.Println(graph)
 }

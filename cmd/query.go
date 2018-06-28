@@ -78,6 +78,9 @@ var queryCmd = &cobra.Command{
 		case "markdown":
 			payments.CreateMarkdown(agg)
 			break
+		case "graph":
+			payments.CreateGraph(agg)
+			break
 		default:
 			payments.CreateTable(agg)
 			break
@@ -87,7 +90,7 @@ var queryCmd = &cobra.Command{
 
 func init() {
 	rootCmd.PersistentFlags().String("aggregate", "none", "aggregate data by time interval (accepted inputs: none, day, month)")
-	rootCmd.PersistentFlags().String("output", "terminal", "output type (accepted inputs: terminal, csv, markdown)")
+	rootCmd.PersistentFlags().String("output", "terminal", "output type (accepted inputs: terminal, csv, markdown, graph)")
 	rootCmd.PersistentFlags().String("filename", "results", "csv output file name")
 	rootCmd.AddCommand(queryCmd)
 }

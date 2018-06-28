@@ -20,6 +20,12 @@
   version = "v1.7.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/guptarohit/asciigraph"
+  packages = ["."]
+  revision = "5b044d9bfd88f352ce6b488d50724145f29be75d"
+
+[[projects]]
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
@@ -95,6 +101,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f79d949c9b0528dd55d73d9c9d5660d79af7a45ecc7251f153899ac261587e26"
+  inputs-digest = "e1f5f61a40f76dde28ffa23ea46ff923c643b807a6459886732810622e20e6ff"
   solver-name = "gps-cdcl"
   solver-version = 1
